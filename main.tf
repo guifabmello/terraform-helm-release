@@ -1,25 +1,44 @@
 /**
-*
-*
-* # terraform-helm-release
-*
-* Terraform module deployment helm chart k8s
-*
-* ## Description
-*
-* Terraform module created to manage deployments helm charts in k8s cluster
-*
-* ## Example usage
-*
-*
-* ```hcl
-* ```
+
+# terraform-helm-release
+
+Terraform module deployment helm chart k8s
+
+## Description
+
+Terraform module created to manage deployments helm charts in k8s cluster
+
+## Example usage
+
+ ```hcl
+provider "kubernetes" {
+  config_context_cluster   = "minikube"
+}
+
+module "helm-release" {
+  source = "../"
+
+  repository_name = "stable"
+  repository_url = "https://kubernetes-charts.storage.googleapis.com"
+
+  app = {
+    "name"          = "nfs-server"
+    "version"       = "1.0.0"
+    "chart"         = "nfs-server-provisioner"
+    "force_update"  = "true"
+    "wait"          = "false"
+    "recreate_pods" = "false"
+    "deploy"        = 1
+  }
+}
+```
 */
 
-resource helm_release this {
+resource "helm_release" "this" {
+
   count         = var.app["deploy"]
   namespace     = var.namespace
-  repository    = var.repository
+  repository    = data.helm_repository.helm_chart_repo.name
   name          = var.app["name"]
   version       = var.app["version"]
   chart         = var.app["chart"]

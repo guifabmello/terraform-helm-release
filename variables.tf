@@ -1,5 +1,29 @@
+
+variable "repository_name" {
+  description = "(Required) Chart repository name."
+  type = string
+}
+
+variable "repository_url" {
+  description = "(Required) Chart repository URL."
+  type        = string
+}
+
+variable "repository_username" {
+  description = "(Optional) Username for HTTP basic authentication."
+  type = string
+  default = null
+}
+
+variable "repository_password" {
+  description = "(Optional) Password for HTTP basic authentication."
+  type = string
+  default = null
+}
+
 variable "namespace" {
   description = "namespace where to deploy an application"
+  default = "default"
 }
 
 variable "app" {
@@ -18,6 +42,7 @@ variable "app" {
 variable "values" {
   description = "Extra values"
   type        = list(string)
+  default = null
 }
 
 variable "set_strings" {
@@ -26,6 +51,7 @@ variable "set_strings" {
     name  = string
     value = string
   }))
+  default = null
 }
 
 variable "set_sensitive" {
@@ -35,9 +61,4 @@ variable "set_sensitive" {
     value = string
   }))
   default = null
-}
-
-variable "repository" {
-  description = "Helm repository"
-  type        = string
 }
