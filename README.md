@@ -1,3 +1,37 @@
+
+# terraform-helm-release
+
+Terraform module deployment helm chart k8s
+
+## Description
+
+Terraform module created to manage deployments helm charts in k8s cluster
+
+## Example usage
+
+ ```hcl
+provider "kubernetes" {
+  config_context_cluster   = "minikube"
+}
+
+module "helm-release" {
+  source = "../"
+
+  repository_name = "stable"
+  repository_url = "https://kubernetes-charts.storage.googleapis.com"
+
+  app = {
+    "name"          = "nfs-server"
+    "version"       = "1.0.0"
+    "chart"         = "nfs-server-provisioner"
+    "force_update"  = "true"
+    "wait"          = "false"
+    "recreate_pods" = "false"
+    "deploy"        = 1
+  }
+}
+```
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
