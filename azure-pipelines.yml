@@ -34,11 +34,13 @@ stages:
 
         - task: ShellScript@2
           displayName: 'Install test dependencies'
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
             scriptPath: test/scripts/install-test-dependencies.sh
 
         - task: Bash@3
           displayName: 'Set up the Go workspace'
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
             targetType: inline
             script: |
@@ -52,6 +54,7 @@ stages:
 
         - task: Bash@3
           displayName: 'Download glide and run `glide install`'
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
             workingDirectory: '$(modulePath)'
             targetType: inline
