@@ -9,6 +9,8 @@
 * Terraform module created to manage deployments helm charts in k8s cluster
 * 
 * ## Example usage
+*
+* - Deploy an nfs provisioner, providing a declarative file and individual entries.
 * 
 *  ```hcl
 * provider "kubernetes" {
@@ -30,6 +32,17 @@
 *     "recreate_pods" = "false"
 *     "deploy"        = 1
 *   }
+* 
+*   values = [
+*     file("deploy.yaml")
+*   ]
+* 
+*   set_strings = [
+*     {
+*       name = "storageClass.name"
+*       value = "nfs-server"
+*     }
+*   ]
 * }
 * ```
 */

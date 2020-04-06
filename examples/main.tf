@@ -17,4 +17,15 @@ module "helm-release" {
     "recreate_pods" = "false"
     "deploy"        = 1
   }
+
+  values = [
+    file("deploy.yaml")
+  ]
+
+  set_strings = [
+    {
+      name = "storageClass.name"
+      value = "nfs-server"
+    }
+  ]
 }
