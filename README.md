@@ -1,4 +1,6 @@
 
+[![Build Status](https://kantarware.visualstudio.com/KM-Engineering-AMS/_apis/build/status/terraform-helm-release?branchName=master)](https://kantarware.visualstudio.com/KM-Engineering-AMS/_build/latest?definitionId=3094&branchName=master)
+
 # terraform-helm-release
 
 Terraform module deployment helm chart k8s
