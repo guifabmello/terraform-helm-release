@@ -13,7 +13,7 @@ Terraform module created to manage deployments helm charts in k8s cluster
 
 - Deploy an nfs provisioner, providing a declarative file and individual entries.
 
- ```hcl
+```hcl
 provider "kubernetes" {
   config_context_cluster   = "minikube"
 }
