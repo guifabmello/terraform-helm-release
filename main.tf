@@ -1,197 +1,82 @@
 /**
-* [![Build Status](https://kantarware.visualstudio.com/KM-Engineering-AMS/_apis/build/status/edalferes.terraform-azure-aks?branchName=master)](https://kantarware.visualstudio.com/KM-Engineering-AMS/_build/latest?definitionId=3049&branchName=master)
-*
-* # terraform-azure-aks
-*
-* Terraform module to deploy an aks cluster at azure
-*
+* 
+* # terraform-helm-release
+* 
+* Terraform module deployment helm chart k8s
+* 
 * ## Description
-*
-* This module creates an aks cluster and a `service pricipal` dedicated to its resources, a virtual network and subnet needs to be previously created. There is also the option to create a `storage account` of the MC resource group, to be used as persistence.
-*
+* 
+* Terraform module created to manage deployments helm charts in k8s cluster
+* 
 * ## Example usage
 *
-* - Creating a cluster containing a single node
-*
-* ```hcl
-* provider "azurerm" {
-*   version = "~> 2.2.0"
-*   features {}
+* - Deploy an nfs provisioner, providing a declarative file and individual entries.
+* 
+*  ```hcl
+* provider "kubernetes" {
+*   config_context_cluster   = "minikube"
 * }
-*
-* resource "azurerm_resource_group" "rg" {
-*   name     = "terraform-aks"
-*   location = "westus"
-* }
-*
-* resource "azurerm_virtual_network" "vnet" {
-*   name                = "terraform-aks-vnet"
-*   address_space       = ["10.30.0.0/16"]
-*   location            = azurerm_resource_group.rg.location
-*   resource_group_name = azurerm_resource_group.rg.name
-* }
-*
-* resource "azurerm_subnet" "subnet" {
-*   name                 = "terraform-aks-subnet"
-*   resource_group_name  = azurerm_resource_group.rg.name
-*   virtual_network_name = azurerm_virtual_network.vnet.name
-*   address_prefix       = "10.30.1.0/24"
-* }
-*
-* module "aks" {
+* 
+* module "helm-release" {
 *   source = "../"
-*
-*   prefix                    = "my-cluster"
-*   admin_username            = "my-user-admin"
-*   location                  = azurerm_resource_group.rg.location
-*   netwok_resource_group     = azurerm_virtual_network.vnet.resource_group_name
-*   network_subnet            = azurerm_subnet.subnet.name
-*   network_vnet              = azurerm_virtual_network.vnet.name
-*   auto_scaling_default_node = false
-*   node_count                = 1
-*   node_max_count            = null
-*   node_min_count            = null
-*   resource_group            = azurerm_resource_group.rg.name
-*   storage_account_name      = mystorageaccountaks
-*
-*   tags = var.tags
-* }
-*
-* ```
-* - Creating a cluster containing several additional nodes
-*
-* ```hcl
-* provider "azurerm" {
-*   version = "~> 2.2.0"
-*   features {}
-* }
-*
-* resource "azurerm_resource_group" "rg" {
-*   name     = "terraform-aks"
-*   location = "westus"
-* }
-*
-* resource "azurerm_virtual_network" "vnet" {
-*   name                = "terraform-aks-vnet"
-*   address_space       = ["10.30.0.0/16"]
-*   location            = azurerm_resource_group.rg.location
-*   resource_group_name = azurerm_resource_group.rg.name
-* }
-*
-* resource "azurerm_subnet" "subnet" {
-*   name                 = "terraform-aks-subnet"
-*   resource_group_name  = azurerm_resource_group.rg.name
-*   virtual_network_name = azurerm_virtual_network.vnet.name
-*   address_prefix       = "10.30.1.0/24"
-* }
-*
-* module "aks" {
-*   source = "../"
-*
-*   prefix                    = "my-cluster"
-*   admin_username            = "my-user-admin"
-*   location                  = azurerm_resource_group.rg.location
-*   netwok_resource_group     = azurerm_virtual_network.vnet.resource_group_name
-*   network_subnet            = azurerm_subnet.subnet.name
-*   network_vnet              = azurerm_virtual_network.vnet.name
-*   auto_scaling_default_node = false
-*   node_count                = 1
-*   node_max_count            = null
-*   node_min_count            = null
-*   resource_group            = azurerm_resource_group.rg.name
-*   storage_account_name      = mystorageaccountaks
-*
-*   additional_node_pools = {
-*     ss = {
-*       vm_size             = "Standard_DS2_v2"
-*       enable_auto_scaling = false
-*       node_count          = 1
-*       min_count           = null
-*       max_count           = null
-*       max_pods            = 110
-*       taints              = ["dedicated=searchstation:NoSchedule"]
-*     }
-*     rabbitmq = {
-*       vm_size             = "Standard_DS2_v2"
-*       enable_auto_scaling = false
-*       node_count          = 1
-*       min_count           = null
-*       max_count           = null
-*       max_pods            = 110
-*       taints              = ["dedicated=rabbitmq:NoSchedule"]
-*     }
-*     elastic = {
-*       vm_size             = "Standard_DS2_v2"
-*       enable_auto_scaling = false
-*       node_count          = 1
-*       min_count           = null
-*       max_count           = null
-*       max_pods            = 110
-*       taints              = ["dedicated=elasticsearch:NoSchedule"]
-*     }
+* 
+*   repository_name = "stable"
+*   repository_url = "https://kubernetes-charts.storage.googleapis.com"
+* 
+*   app = {
+*     "name"          = "nfs-server"
+*     "version"       = "1.0.0"
+*     "chart"         = "nfs-server-provisioner"
+*     "force_update"  = "true"
+*     "wait"          = "false"
+*     "recreate_pods" = "false"
+*     "deploy"        = 1
 *   }
-*
-*   tags = var.tags
+* 
+*   values = [
+*     file("deploy.yaml")
+*   ]
+* 
+*   set_strings = [
+*     {
+*       name = "storageClass.name"
+*       value = "nfs-server"
+*     }
+*   ]
 * }
-*
 * ```
 */
 
-resource "azurerm_kubernetes_cluster" "k8s" {
+resource "helm_release" "this" {
 
-  lifecycle {
-    ignore_changes = [
-      default_node_pool[0].node_count,
-    ]
-  }
+  count         = var.app["deploy"]
+  namespace     = var.namespace
+  repository    = data.helm_repository.helm_chart_repo.name
+  name          = var.app["name"]
+  version       = var.app["version"]
+  chart         = var.app["chart"]
+  force_update  = var.app["force_update"]
+  wait          = var.app["wait"]
+  recreate_pods = var.app["recreate_pods"]
+  values        = var.values
 
-  depends_on = [
-    null_resource.delay_after_sp_created
-  ]
+  dynamic "set_string" {
+    iterator = item
+    for_each = var.set_strings == null ? [] : var.set_strings
 
-  name                = local.prefix
-  resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
-  dns_prefix          = "${local.prefix}-dns"
-  kubernetes_version  = var.k8s_version
-
-  linux_profile {
-
-    admin_username = var.admin_username
-
-    ssh_key {
-      key_data = tls_private_key.pair.public_key_openssh
+    content {
+      name  = item.value.name
+      value = item.value.value
     }
   }
 
-  default_node_pool {
-    name                = "main"
-    vm_size             = var.vm_size
-    vnet_subnet_id      = local.subnet_id
-    enable_auto_scaling = var.auto_scaling_default_node
-    node_count          = var.node_count
-    min_count           = var.node_min_count
-    max_count           = var.node_max_count
-    max_pods            = var.max_pods
-  }
+  dynamic "set_sensitive" {
+    iterator = item
+    for_each = var.set_sensitive == null ? [] : var.set_sensitive
 
-  service_principal {
-    client_id     = azuread_service_principal.sp.application_id
-    client_secret = azuread_service_principal_password.sp.value
+    content {
+      name  = item.value.path
+      value = item.value.value
+    }
   }
-
-  role_based_access_control {
-    enabled = var.rbac_enabled
-  }
-
-  network_profile {
-    network_plugin     = "kubenet"
-    service_cidr       = var.service_cidr
-    dns_service_ip     = var.dns_service_ip
-    pod_cidr           = var.pod_cidr
-    docker_bridge_cidr = var.docker_bridge_cidr
-  }
-
-  tags = var.tags
 }
-
