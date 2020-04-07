@@ -15,13 +15,10 @@
 * - Deploy an nfs provisioner, providing a declarative file and individual entries.
 * 
 * ```hcl
-* provider "kubernetes" {
-*   config_context_cluster   = "minikube"
-* }
-* 
+*
 * module "helm-release" {
 *   source = "../"
-* 
+*   config_context_cluster = "minikube"
 *   repository_name = "stable"
 *   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 * 
@@ -46,8 +43,13 @@
 *     }
 *   ]
 * }
+*
 * ```
 */
+
+provider "kubernetes" {
+  config_context_cluster   = var.config_context_cluster
+}
 
 resource "helm_release" "this" {
 

@@ -1,3 +1,6 @@
+variable "config_context_cluster" {
+  description = "Cluster context of the kube config (name of the kubeconfig cluster, --cluster flag in kubectl). Can be sourced from KUBE_CTX_CLUSTER."
+}
 
 variable "repository_name" {
   description = "(Required) Chart repository name."
