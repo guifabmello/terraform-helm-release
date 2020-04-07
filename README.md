@@ -84,5 +84,11 @@ module "helm-release" {
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| chart | The name of the chart. |
+| namespace | Namespace is the kubernetes namespace of the release. |
+| status | Status of the release. |
+| values | The compounded values from values and set\* attributes. |
+| version | A SemVer 2 conformant version string of the chart. |
 
