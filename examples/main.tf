@@ -1,6 +1,7 @@
 module "helm-release" {
   source = "../"
   config_context_cluster = "minikube"
+  config_path = "~/.kube/config"
   repository_name = "stable"
   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 

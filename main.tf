@@ -49,6 +49,7 @@
 
 provider "kubernetes" {
   config_context_cluster   = var.config_context_cluster
+  config_path = var.config_path
 }
 
 resource "helm_release" "this" {

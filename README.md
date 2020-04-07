@@ -51,6 +51,7 @@ module "helm-release" {
 |------|-------------|------|---------|:--------:|
 | app | an application to deploy | <pre>object({<br>    name          = string<br>    version       = string<br>    chart         = string<br>    force_update  = bool<br>    wait          = bool<br>    recreate_pods = bool<br>    deploy        = number<br>  })</pre> | n/a | yes |
 | config\_context\_cluster | Cluster context of the kube config (name of the kubeconfig cluster, --cluster flag in kubectl). Can be sourced from KUBE\_CTX\_CLUSTER. | `any` | n/a | yes |
+| config\_path | Path to the kube config file. | `string` | `"~/.kube/config"` | no |
 | namespace | namespace where to deploy an application | `string` | `"default"` | no |
 | repository\_name | (Required) Chart repository name. | `string` | n/a | yes |
 | repository\_password | (Optional) Password for HTTP basic authentication. | `string` | `null` | no |
