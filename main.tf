@@ -49,6 +49,10 @@
 * ```
 */
 
+provider "kubernetes" {
+  config_context_cluster   = var.config_context_cluster
+}
+
 resource "helm_release" "this" {
 
   count         = var.app["deploy"]
