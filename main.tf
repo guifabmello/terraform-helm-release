@@ -17,8 +17,8 @@
 * ```hcl
 *
 * module "helm-release" {
-*   source = "../"
-*   config_context_cluster = "minikube"
+*   source = "app.terraform.io/KantarWare/release/helm"
+*   config_context = "minikube"
 *   repository_name = "stable"
 *   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 * 
@@ -42,8 +42,8 @@
 *       value = "nfs-server"
 *     }
 *   ]
+* 
 * }
-*
 * ```
 */
 

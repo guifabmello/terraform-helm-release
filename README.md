@@ -16,8 +16,8 @@ Terraform module created to manage deployments helm charts in k8s cluster
 ```hcl
 
 module "helm-release" {
-  source = "../"
-  config_context_cluster = "minikube"
+  source = "app.terraform.io/KantarWare/release/helm"
+  config_context = "minikube"
   repository_name = "stable"
   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 
@@ -41,8 +41,8 @@ module "helm-release" {
       value = "nfs-server"
     }
   ]
-}
 
+}
 ```
 
 ## Inputs
