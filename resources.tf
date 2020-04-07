@@ -1,7 +1,10 @@
 data "helm_repository" "helm_chart_repo" {
-  name = var.repository_name
-  url  = var.repository_url
 
-  username = var.repository_username
-  password = var.repository_password
+  for_each = var.release
+
+  name = each.value.repository_name
+  url  = each.value.repository_url
+
+  username = each.value.repository_name
+  password = each.value.repository_password
 }
