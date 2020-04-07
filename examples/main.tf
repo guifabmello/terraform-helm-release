@@ -1,7 +1,3 @@
-provider "kubernetes" {
-  config_context_cluster   = "minikube"
-}
-
 module "helm-release" {
   source = "../"
   config_context_cluster = "minikube"
