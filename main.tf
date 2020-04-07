@@ -47,9 +47,12 @@
 * ```
 */
 
-provider "kubernetes" {
-  config_context_cluster   = var.config_context_cluster
-  config_path = var.config_path
+provider "helm" {
+  version = "v0.10.4"
+  kubernetes {
+    config_context = var.config_context
+    config_path = var.config_path
+  }
 }
 
 resource "helm_release" "this" {

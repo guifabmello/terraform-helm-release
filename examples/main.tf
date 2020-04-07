@@ -1,7 +1,7 @@
 module "helm-release" {
   source = "../"
-  config_context_cluster = "minikube"
-  config_path = "~/.kube/config"
+  config_context = "minikube"
+  config_path = "~/Downloads/config"
   repository_name = "stable"
   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 
@@ -25,4 +25,5 @@ module "helm-release" {
       value = "nfs-server"
     }
   ]
+
 }
