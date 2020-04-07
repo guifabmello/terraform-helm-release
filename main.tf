@@ -8,47 +8,76 @@
 * 
 * ## Description
 * 
-* Terraform module created to manage deployments helm charts in k8s cluster
-* 
+* This module dynamically manages helm charts deployments in a k8s cluster.
+* Just specify in a list the deployments in a single module call. 
 * ## Example usage
 *
-* - Deploy an nfs provisioner, providing a declarative file and individual entries.
+* - Deploy an nfs-provisioner, providing a declarative file and individual entries.
+* - Deploy mysql.
+* - Deploy prometheus-operator.
 * 
 * ```hcl
-*
 * module "helm-release" {
-*   source = "app.terraform.io/KantarWare/release/helm"
+*   source = "../"
 *   config_context = "minikube"
-*   repository_name = "stable"
-*   repository_url = "https://kubernetes-charts.storage.googleapis.com"
 * 
-*   app = {
-*     "name"          = "nfs-server"
-*     "version"       = "1.0.0"
-*     "chart"         = "nfs-server-provisioner"
-*     "force_update"  = "true"
-*     "wait"          = "false"
-*     "recreate_pods" = "false"
-*     "deploy"        = 1
-*   }
-* 
-*   values = [
-*     file("deploy.yaml")
-*   ]
-* 
-*   set_strings = [
-*     {
-*       name = "storageClass.name"
-*       value = "nfs-server"
+*   release = {
+*     nfs-server = {
+*       repository_name     = "stable"
+*       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+*       repository_username = null
+*       repository_password = null
+*       namespace           = "default"
+*       version             = "1.0.0"
+*       chart               = "nfs-server-provisioner"
+*       force_update        = true
+*       wait                = false
+*       recreate_pods       = false
+*       values = [
+*         file("deploy.yaml")
+*       ]
+*       set_strings = [
+*         {
+*           name = "storageClass.name"
+*           value = "nfs-server"
+*         }
+*       ]
 *     }
-*   ]
-* 
+*     mysql = {
+*       repository_name     = "stable"
+*       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+*       repository_username = null
+*       repository_password = null
+*       namespace           = "default"
+*       version             = "1.6.2"
+*       chart               = "mysql"
+*       force_update        = true
+*       wait                = false
+*       recreate_pods       = false
+*       values = null
+*       set_strings = null
+*     }
+*     prometheus-operator = {
+*       repository_name     = "stable"
+*       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+*       repository_username = null
+*       repository_password = null
+*       namespace           = "default"
+*       version             = "8.12.10"
+*       chart               = "prometheus-operator"
+*       force_update        = true
+*       wait                = false
+*       recreate_pods       = false
+*       values = null
+*       set_strings = null
+*     }
+*   }
 * }
 * ```
 */
 
 provider "helm" {
-  version = "v0.10.4"
+  version = "v1.1.0"
   kubernetes {
     config_context = var.config_context
     config_path = var.config_path
@@ -57,33 +86,25 @@ provider "helm" {
 
 resource "helm_release" "this" {
 
-  count         = var.app["deploy"]
-  namespace     = var.namespace
-  repository    = data.helm_repository.helm_chart_repo.name
-  name          = var.app["name"]
-  version       = var.app["version"]
-  chart         = var.app["chart"]
-  force_update  = var.app["force_update"]
-  wait          = var.app["wait"]
-  recreate_pods = var.app["recreate_pods"]
-  values        = var.values
+  for_each = var.release
+
+  repository = data.helm_repository.helm_chart_repo[each.key].name
+
+  namespace = each.value.namespace
+  name = substr(each.key, 0, 30)
+  chart = each.value.chart
+  version = each.value.version
+  force_update = each.value.force_update
+  wait = each.value.wait
+  recreate_pods = each.value.recreate_pods
+  values = each.value.values
 
   dynamic "set_string" {
     iterator = item
-    for_each = var.set_strings == null ? [] : var.set_strings
+    for_each = each.value.set_strings == null ? [] : each.value.set_strings
 
     content {
       name  = item.value.name
-      value = item.value.value
-    }
-  }
-
-  dynamic "set_sensitive" {
-    iterator = item
-    for_each = var.set_sensitive == null ? [] : var.set_sensitive
-
-    content {
-      name  = item.value.path
       value = item.value.value
     }
   }

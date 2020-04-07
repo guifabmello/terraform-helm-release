@@ -7,41 +7,70 @@ Terraform module deployment helm chart k8s
 
 ## Description
 
-Terraform module created to manage deployments helm charts in k8s cluster
-
+This module dynamically manages helm charts deployments in a k8s cluster.  
+Just specify in a list the deployments in a single module call.
 ## Example usage
 
-- Deploy an nfs provisioner, providing a declarative file and individual entries.
+- Deploy an nfs-provisioner, providing a declarative file and individual entries.
+- Deploy mysql.
+- Deploy prometheus-operator.
 
 ```hcl
-
 module "helm-release" {
-  source = "app.terraform.io/KantarWare/release/helm"
+  source = "../"
   config_context = "minikube"
-  repository_name = "stable"
-  repository_url = "https://kubernetes-charts.storage.googleapis.com"
 
-  app = {
-    "name"          = "nfs-server"
-    "version"       = "1.0.0"
-    "chart"         = "nfs-server-provisioner"
-    "force_update"  = "true"
-    "wait"          = "false"
-    "recreate_pods" = "false"
-    "deploy"        = 1
-  }
-
-  values = [
-    file("deploy.yaml")
-  ]
-
-  set_strings = [
-    {
-      name = "storageClass.name"
-      value = "nfs-server"
+  release = {
+    nfs-server = {
+      repository_name     = "stable"
+      repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+      repository_username = null
+      repository_password = null
+      namespace           = "default"
+      version             = "1.0.0"
+      chart               = "nfs-server-provisioner"
+      force_update        = true
+      wait                = false
+      recreate_pods       = false
+      values = [
+        file("deploy.yaml")
+      ]
+      set_strings = [
+        {
+          name = "storageClass.name"
+          value = "nfs-server"
+        }
+      ]
     }
-  ]
-
+    mysql = {
+      repository_name     = "stable"
+      repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+      repository_username = null
+      repository_password = null
+      namespace           = "default"
+      version             = "1.6.2"
+      chart               = "mysql"
+      force_update        = true
+      wait                = false
+      recreate_pods       = false
+      values = null
+      set_strings = null
+    }
+    prometheus-operator = {
+      repository_name     = "stable"
+      repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+      repository_username = null
+      repository_password = null
+      namespace           = "default"
+      version             = "8.12.10"
+      chart               = "prometheus-operator"
+      force_update        = true
+      wait                = false
+      recreate_pods       = false
+      values = null
+      set_strings = null
+    }
+  }
 }
 ```
 
@@ -49,19 +78,17 @@ module "helm-release" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| app | an application to deploy | <pre>object({<br>    name          = string<br>    version       = string<br>    chart         = string<br>    force_update  = bool<br>    wait          = bool<br>    recreate_pods = bool<br>    deploy        = number<br>  })</pre> | n/a | yes |
 | config\_context | Cluster context of the kube config (name of the kubeconfig cluster, --cluster flag in kubectl). Can be sourced from KUBE\_CTX\_CLUSTER. | `any` | n/a | yes |
 | config\_path | Path to the kube config file. | `string` | `"~/.kube/config"` | no |
-| namespace | namespace where to deploy an application | `string` | `"default"` | no |
-| repository\_name | (Required) Chart repository name. | `string` | n/a | yes |
-| repository\_password | (Optional) Password for HTTP basic authentication. | `string` | `null` | no |
-| repository\_url | (Required) Chart repository URL. | `string` | n/a | yes |
-| repository\_username | (Optional) Username for HTTP basic authentication. | `string` | `null` | no |
-| set\_sensitive | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| set\_strings | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| values | Extra values | `list(string)` | `null` | no |
+| release | List application to deploy | <pre>map(object({<br>    repository_name = string<br>    repository_url = string<br>    repository_username = string<br>    repository_password = string<br>    namespace = string<br>    version       = string<br>    chart         = string<br>    force_update  = bool<br>    wait          = bool<br>    recreate_pods = bool<br>    values = list(string)<br>    set_strings = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| chart | The name of the chart. |
+| namespace | Namespace is the kubernetes namespace of the release. |
+| status | Status of the release. |
+| values | The compounded values from values and set\* attributes. |
+| version | A SemVer 2 conformant version string of the chart. |
 
