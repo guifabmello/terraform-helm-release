@@ -99,7 +99,7 @@ resource "helm_release" "this" {
 
   repository = data.helm_repository.helm_chart_repo[each.key].name
 
-  namespace = each.value.namespace
+  namespace = substr(each.key, 0, 30)
   name = substr(each.key, 0, 30)
   chart = each.value.chart
   version = each.value.version
