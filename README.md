@@ -17,7 +17,7 @@ Just specify in a list the deployments in a single module call.
 
 ```hcl
 module "helm-release" {
-  source = "../"
+  source = "app.terraform.io/KantarWare/release/helm"
   config_context = "minikube"
 
   release = {
@@ -26,7 +26,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "nfs-server"
       version             = "1.0.0"
       chart               = "nfs-server-provisioner"
       force_update        = true
@@ -61,7 +61,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "mysql"
       version             = "8.12.10"
       chart               = "prometheus-operator"
       force_update        = true
@@ -80,7 +80,7 @@ module "helm-release" {
 |------|-------------|------|---------|:--------:|
 | config\_context | Cluster context of the kube config (name of the kubeconfig cluster, --cluster flag in kubectl). Can be sourced from KUBE\_CTX\_CLUSTER. | `any` | n/a | yes |
 | config\_path | Path to the kube config file. | `string` | `"~/.kube/config"` | no |
-| release | List application to deploy | <pre>map(object({<br>    repository_name = string<br>    repository_url = string<br>    repository_username = string<br>    repository_password = string<br>    namespace = string<br>    version       = string<br>    chart         = string<br>    force_update  = bool<br>    wait          = bool<br>    recreate_pods = bool<br>    values = list(string)<br>    set_strings = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
+| release | List application to deploy | <pre>map(object({<br>    repository_name = string<br>    repository_url = string<br>    repository_username = string<br>    repository_password = string<br>    version       = string<br>    chart         = string<br>    force_update  = bool<br>    wait          = bool<br>    recreate_pods = bool<br>    values = list(string)<br>    set_strings = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 

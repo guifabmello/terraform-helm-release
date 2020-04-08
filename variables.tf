@@ -14,7 +14,6 @@ variable "release" {
     repository_url = string
     repository_username = string
     repository_password = string
-    namespace = string
     version       = string
     chart         = string
     force_update  = bool
