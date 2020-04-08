@@ -76,6 +76,11 @@
 * ```
 */
 
+provider "kubernetes" {
+  config_context_cluster   = var.config_context
+  config_path = var.config_path
+}
+
 provider "helm" {
   version = "v1.1.0"
   kubernetes {

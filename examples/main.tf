@@ -10,7 +10,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "nfs-server"
       version             = "1.0.0"
       chart               = "nfs-server-provisioner"
       force_update        = true
@@ -31,7 +31,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "mysql"
       version             = "1.6.2"
       chart               = "mysql"
       force_update        = true
@@ -45,7 +45,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "prometheus"
       version             = "8.12.10"
       chart               = "prometheus-operator"
       force_update        = true
