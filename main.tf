@@ -18,7 +18,7 @@
 * 
 * ```hcl
 * module "helm-release" {
-*   source = "../"
+*   source = "app.terraform.io/KantarWare/release/helm"
 *   config_context = "minikube"
 * 
 *   release = {
@@ -27,7 +27,7 @@
 *       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
 *       repository_username = null
 *       repository_password = null
-*       namespace           = "default"
+*       namespace           = "nfs-server"
 *       version             = "1.0.0"
 *       chart               = "nfs-server-provisioner"
 *       force_update        = true
@@ -62,7 +62,7 @@
 *       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
 *       repository_username = null
 *       repository_password = null
-*       namespace           = "default"
+*       namespace           = "mysql"
 *       version             = "8.12.10"
 *       chart               = "prometheus-operator"
 *       force_update        = true
@@ -91,6 +91,10 @@ provider "helm" {
 
 resource "helm_release" "this" {
 
+  depends_on = [
+    kubernetes_namespace.this
+  ]
+
   for_each = var.release
 
   repository = data.helm_repository.helm_chart_repo[each.key].name
@@ -103,6 +107,7 @@ resource "helm_release" "this" {
   wait = each.value.wait
   recreate_pods = each.value.recreate_pods
   values = each.value.values
+
 
   dynamic "set_string" {
     iterator = item

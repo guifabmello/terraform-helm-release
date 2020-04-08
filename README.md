@@ -17,7 +17,7 @@ Just specify in a list the deployments in a single module call.
 
 ```hcl
 module "helm-release" {
-  source = "../"
+  source = "app.terraform.io/KantarWare/release/helm"
   config_context = "minikube"
 
   release = {
@@ -26,7 +26,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "nfs-server"
       version             = "1.0.0"
       chart               = "nfs-server-provisioner"
       force_update        = true
@@ -61,7 +61,7 @@ module "helm-release" {
       repository_url      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
-      namespace           = "default"
+      namespace           = "mysql"
       version             = "8.12.10"
       chart               = "prometheus-operator"
       force_update        = true
