@@ -12,6 +12,14 @@ data "helm_repository" "helm_chart_repo" {
 resource "kubernetes_namespace" "this" {
   for_each = var.release
   metadata {
-    name = substr(each.key, 0, 30)
+    annotations = {
+      name = substr(each.key, 0, 100)
+    }
+
+    labels = {
+      privisioner = "terraform"
+    }
+
+    name = substr(each.key, 0, 100)
   }
 }
