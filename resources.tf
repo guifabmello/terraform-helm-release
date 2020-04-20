@@ -13,13 +13,13 @@ resource "kubernetes_namespace" "this" {
   for_each = var.release
   metadata {
     annotations = {
-      name = substr(each.key, 0, 30)
+      name = substr(each.key, 0, 100)
     }
 
     labels = {
       privisioner = "terraform"
     }
 
-    name = substr(each.key, 0, 30)
+    name = substr(each.key, 0, 100)
   }
 }
