@@ -97,7 +97,9 @@ resource "helm_release" "this" {
 
   for_each = var.release
 
-  repository = data.helm_repository.helm_chart_repo[each.key].name
+  repository = each.value.repository_url
+  repository_username = each.value.repository_name
+  repository_password = each.value.repository_password
 
   namespace = substr(each.key, 0, 30)
   name = substr(each.key, 0, 30)
@@ -109,9 +111,9 @@ resource "helm_release" "this" {
   values = each.value.values
 
 
-  dynamic "set_string" {
+  dynamic "set" {
     iterator = item
-    for_each = each.value.set_strings == null ? [] : each.value.set_strings
+    for_each = each.value.set == null ? [] : each.value.set
 
     content {
       name  = item.value.name
