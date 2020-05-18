@@ -20,7 +20,7 @@ variable "release" {
     wait          = bool
     recreate_pods = bool
     values = list(string)
-    set_strings = list(object({
+    set = list(object({
       name  = string
       value = string
     }))
