@@ -32,56 +32,56 @@ stages:
 
         steps:
 
-        - task: ShellScript@2
-          displayName: 'Install test dependencies'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          inputs:
-            scriptPath: test/scripts/install-test-dependencies.sh
+        #- task: ShellScript@2
+        #  displayName: 'Install test dependencies'
+        #  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        #  inputs:
+        #    scriptPath: test/scripts/install-test-dependencies.sh
 
-        - task: Bash@3
-          displayName: 'Set up the Go workspace'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          inputs:
-            targetType: inline
-            script: |
-              mkdir -pv '$(GOBIN)'
-              mkdir -pv '$(GOPATH)/pkg'
-              mkdir -pv '$(modulePath)'
-              shopt -s extglob
-              mv !(gopath) '$(modulePath)'
-              echo '##vso[task.prependpath]$(GOBIN)'
-              echo '##vso[task.prependpath]$(GOROOT)/bin'
+        #- task: Bash@3
+        #  displayName: 'Set up the Go workspace'
+        #  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        #  inputs:
+        #    targetType: inline
+        #    script: |
+        #      mkdir -pv '$(GOBIN)'
+        #      mkdir -pv '$(GOPATH)/pkg'
+        #      mkdir -pv '$(modulePath)'
+        #      shopt -s extglob
+        #      mv !(gopath) '$(modulePath)'
+        #      echo '##vso[task.prependpath]$(GOBIN)'
+        #      echo '##vso[task.prependpath]$(GOROOT)/bin'
 
-        - task: Bash@3
-          displayName: 'Download glide and run `glide install`'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          inputs:
-            workingDirectory: '$(modulePath)'
-            targetType: inline
-            script: |
-              cd test
-              if [ -f glide.yaml ]; then
-                  curl https://glide.sh/get | sh
-                  glide install
-              fi
+        #- task: Bash@3
+        #  displayName: 'Download glide and run `glide install`'
+        #  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        #  inputs:
+        #    workingDirectory: '$(modulePath)'
+        #    targetType: inline
+        #    script: |
+        #      cd test
+        #      if [ -f glide.yaml ]; then
+        #          curl https://glide.sh/get | sh
+        #          glide install
+        #      fi
 
-        - task: Bash@3
-          displayName: 'go test'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          inputs:
-            workingDirectory: '$(modulePath)'
-            targetType: inline
-            script: |
-              cd test
-              go get -v -u github.com/jstemmer/go-junit-report
-              go test -v -timeout 0 2>&1 | go-junit-report > report.xml
+        #- task: Bash@3
+        #  displayName: 'go test'
+        #  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        #  inputs:
+        #    workingDirectory: '$(modulePath)'
+        #    targetType: inline
+        #    script: |
+        #      cd test
+        #      go get -v -u github.com/jstemmer/go-junit-report
+        #      go test -v -timeout 0 2>&1 | go-junit-report > report.xml
     
-        - task: PublishTestResults@2
-          displayName: 'Publish result test'
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          inputs:
-            testResultsFormat: 'JUnit'
-            testResultsFiles: $(modulePath)/test/report.xml
+        #- task: PublishTestResults@2
+        #  displayName: 'Publish result test'
+        #  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        #  inputs:
+        #    testResultsFormat: 'JUnit'
+        #    testResultsFiles: $(modulePath)/test/report.xml
 
         - task: GitHubRelease@0
           displayName: PushRelease
