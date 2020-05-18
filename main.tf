@@ -92,7 +92,7 @@ provider "helm" {
 resource "helm_release" "this" {
 
   depends_on = [
-    kubernetes_namespace.this
+    null_resource.create_namespace
   ]
 
   for_each = var.release
