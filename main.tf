@@ -122,25 +122,24 @@ provider "helm" {
 
 resource "helm_release" "this" {
 
-  depends_on = [
-    null_resource.create_namespace
-  ]
-
   for_each = var.release
 
-  repository = each.value.repository_url
-  repository_username = each.value.repository_name
-  repository_password = each.value.repository_password
-
-  namespace = substr(each.key, 0, 30)
   name = substr(each.key, 0, 30)
   chart = each.value.chart
+  repository = each.value.repository
+  repository_username = each.value.repository_name
+  repository_password = each.value.repository_password
   version = each.value.version
+  namespace = substr(each.key, 0, 30)
+  verify = each.value.verify
+  timeout = each.value.timeout
+  reuse_values = each.value.reuse_values
+  reset_values = each.value.reset_values
   force_update = each.value.force_update
-  wait = each.value.wait
   recreate_pods = each.value.recreate_pods
+  max_history = each.value.max_history
+  wait = each.value.wait
   values = each.value.values
-
 
   dynamic "set" {
     iterator = item
@@ -151,4 +150,6 @@ resource "helm_release" "this" {
       value = item.value.value
     }
   }
+
+  create_namespace = each.value.create_namespace
 }
