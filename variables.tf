@@ -17,6 +17,8 @@ variable "release" {
     version       = string
     chart         = string
     force_update  = bool
+    timeout       = string
+    max_history   = number
     wait          = bool
     recreate_pods = bool
     values = list(string)

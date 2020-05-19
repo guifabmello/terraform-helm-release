@@ -15,6 +15,8 @@ module "helm-release" {
       force_update        = true
       wait                = false
       recreate_pods       = false
+      timeout             = "3600s"
+      max_history         = 200
       values              = null
       set_strings = null
     }
@@ -28,6 +30,8 @@ module "helm-release" {
       force_update        = true
       wait                = false
       recreate_pods       = false
+      timeout             = "3600s"
+      max_history         = 200
       values              = null
       set_strings = [
         {
@@ -46,6 +50,8 @@ module "helm-release" {
       force_update        = true
       wait                = false
       recreate_pods       = false
+      timeout             = "3600s"
+      max_history         = 200
       values = null
       set_strings = null
     }
@@ -59,6 +65,8 @@ module "helm-release" {
       force_update        = true
       wait                = false
       recreate_pods       = false
+      timeout             = "3600s"
+      max_history         = 200
       values = null
       set_strings = null
     }
@@ -72,6 +80,8 @@ module "helm-release" {
       force_update        = true
       wait                = false
       recreate_pods       = false
+      timeout             = "3600s"
+      max_history         = 200
       values = null
       set_strings = null
     }
