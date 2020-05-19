@@ -11,21 +11,25 @@ variable "release" {
   description = "List application to deploy"
   type = map(object({
     repository_name = string
-    repository_url = string
+    chart         = string
+    repository = string
     repository_username = string
     repository_password = string
     version       = string
-    chart         = string
+    verify        = bool
+    timeout       = number
+    reuse_values  = bool
+    reset_values  = bool
     force_update  = bool
-    timeout       = string
+    recreate_pods = bool
     max_history   = number
     wait          = bool
-    recreate_pods = bool
     values = list(string)
     set = list(object({
       name  = string
       value = string
     }))
+    create_namespace = bool
   }))
   default = {}
 }
