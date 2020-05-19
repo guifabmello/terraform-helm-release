@@ -8,7 +8,7 @@ module "helm-release" {
     nfs-operator = {
       repository_name     = "stable"
       chart               = "nfs-server-provisioner"
-      repository_url      = "https://kubernetes-charts.storage.googleapis.com"
+      repository      = "https://kubernetes-charts.storage.googleapis.com"
       repository_username = null
       repository_password = null
       version             = "1.0.0"
@@ -28,7 +28,7 @@ module "helm-release" {
     voyager-operator = {
       repository_name     = "appscode"
       chart               = "voyager"
-      repository_url      = "https://charts.appscode.com/stable"
+      repository      = "https://charts.appscode.com/stable"
       repository_username = null
       repository_password = null
       version             = "v12.0.0-rc.1"
