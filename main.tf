@@ -78,7 +78,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "v1.2.1"
+  #version = "2.3.2"
   kubernetes {
     config_context = var.config_context
     config_path = var.config_path
