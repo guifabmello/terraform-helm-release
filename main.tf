@@ -117,5 +117,5 @@ resource "helm_release" "this" {
   }
 
   namespace = each.value.namespace
-  create_namespace = each.value.namespace
+  create_namespace = each.value.create_namespace
 }
