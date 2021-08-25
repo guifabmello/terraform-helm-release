@@ -1,7 +1,5 @@
 resource "helm_release" "this" {
 
-  provider = 
-
   for_each = var.release
 
   name = substr(each.key, 0, 30)
