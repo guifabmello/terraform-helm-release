@@ -78,14 +78,6 @@ provider "kubernetes" {
   config_path = var.config_path
 }
 
-provider "helm" {
-  #version = "2.3.2"
-  kubernetes {
-    config_context = var.config_context
-    config_path = var.config_path
-  }
-}
-
 resource "helm_release" "this" {
 
   for_each = var.release
