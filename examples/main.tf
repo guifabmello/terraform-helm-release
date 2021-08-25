@@ -2,7 +2,6 @@
 
 module "helm-release" {
   source         = "../"
-  config_context = "minikube"
 
   release = {
     nfs-operator = {
@@ -23,8 +22,10 @@ module "helm-release" {
       values              = null
       set                 = null
 
+      namespace = "nfs-operator"
       create_namespace = true
     }
+
     voyager-operator = {
       repository_name     = "appscode"
       chart               = "voyager"
@@ -48,6 +49,7 @@ module "helm-release" {
         }
       ]
 
+      namespace = "voyager-operator"
       create_namespace = true
     }
   }
