@@ -40,6 +40,7 @@
 *       values              = null
 *       set                 = null
 * 
+*       namespace = nfs-operator
 *       create_namespace = true
 *     }
 *     voyager-operator = {
@@ -64,7 +65,7 @@
 *           value = "minikube"
 *         }
 *       ]
-* 
+*       namespace = voyager-operator
 *       create_namespace = true
 *     }
 *   }
@@ -95,7 +96,6 @@ resource "helm_release" "this" {
   repository_username = each.value.repository_name
   repository_password = each.value.repository_password
   version = each.value.version
-  namespace = substr(each.key, 0, 30)
   verify = each.value.verify
   timeout = each.value.timeout
   reuse_values = each.value.reuse_values
@@ -116,5 +116,6 @@ resource "helm_release" "this" {
     }
   }
 
-  create_namespace = each.value.create_namespace
+  namespace = each.value.namespace
+  create_namespace = each.value.namespace
 }

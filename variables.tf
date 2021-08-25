@@ -29,6 +29,7 @@ variable "release" {
       name  = string
       value = string
     }))
+    namespace = string
     create_namespace = bool
   }))
   default = {}
