@@ -1,5 +1,16 @@
+variable "config_path" {
+  description = "Path to the kube config file."
+  default = "~/.kube/config"
+}
+
+variable "namespace" {
+  description = "namespace"
+  default = "rtm-test-gui"
+}
+
 variable "release" {
   description = "List application to deploy"
+
   type = map(object({
     repository_name = string
     chart         = string
