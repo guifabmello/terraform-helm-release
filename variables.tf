@@ -9,7 +9,6 @@ variable "config_path" {
 
 variable "release" {
   description = "List application to deploy"
-
   type = map(object({
     repository_name = string
     chart         = string
@@ -30,7 +29,6 @@ variable "release" {
       name  = string
       value = string
     }))
-    namespace = string
     create_namespace = bool
   }))
   default = {}
