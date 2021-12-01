@@ -17,13 +17,13 @@ resources:
 
 stages:
 
-  - template: stages/bootstrap.yml@templates
+  - template: stages/bootstrap3.yml@templates
 
   - stage: Build
     jobs:
       - job: Build
         pool:
-          vmImage: 'Ubuntu-18.04'
+          vmImage: 'Ubuntu-20.04'
         variables:
           GOBIN:  '$(GOPATH)/bin' # Go binaries path
           GOROOT: '/usr/local/go1.12' # Go installation path
@@ -87,7 +87,7 @@ stages:
           displayName: PushRelease
           condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
-            gitHubConnection: 'edalferes-access-token'
+            gitHubConnection: 'guifabmello-access-token'
             repositoryName: $(Build.Repository.Name)
             title: $(Build.BuildNumber)
             action: 'create'

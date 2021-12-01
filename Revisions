@@ -1,0 +1,4 @@
+unreleased 1.6.1
+================
+* Update bootstrap version from 2 to 3 in azure pipeline (KMAMS-966696)
+* Changed target repository for azure pipeline (KMAMS-966696)
