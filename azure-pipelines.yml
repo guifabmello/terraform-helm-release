@@ -24,11 +24,6 @@ stages:
       - job: Build
         pool:
           vmImage: 'Ubuntu-20.04'
-        variables:
-          GOBIN:  '$(GOPATH)/bin' # Go binaries path
-          GOROOT: '/usr/local/go1.12' # Go installation path
-          GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
-          modulePath: '$(GOPATH)/src/$(Build.Repository.Name)' # Path to the module's code
 
         steps:
 
@@ -41,7 +36,9 @@ stages:
             title: $(Build.BuildNumber)
             action: 'create'
             tagSource: manual
-            tag: $(Build.BuildNumber)
+            tags: |
+              latest
+              $(Build.BuildNumber)
             addChangeLog: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
