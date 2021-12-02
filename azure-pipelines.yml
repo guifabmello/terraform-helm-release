@@ -48,4 +48,3 @@ stages:
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
               $(Build.ArtifactStagingDirectory)/CHANGELOG.md
-                  
