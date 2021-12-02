@@ -26,17 +26,17 @@ stages:
           vmImage: 'Ubuntu-20.04'
 
         steps:
-        - task: GitHubRelease@1
+        - task: GitHubRelease@0
+          displayName: PushRelease
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
             gitHubConnection: 'guifabmello-access-token'
-            repositoryName: 'guifabmello/terraform-azure-aks'
+            repositoryName: 'guifabmello/terraform-helm-release'
+            title: $(Build.BuildNumber)
             action: 'create'
-            target: '$(Build.SourceVersion)'
-            tagSource: 'userSpecifiedTag'
-            tag: 'latest'
-            title: '$(Build.BuildNumber)'
+            tagSource: manual
+            tag: $(Build.BuildNumber)
+            addChangeLog: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
               $(Build.ArtifactStagingDirectory)/CHANGELOG.md
-            changeLogCompareToRelease: 'lastFullRelease'
-            changeLogType: 'commitBased'
