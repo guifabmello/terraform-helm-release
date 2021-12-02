@@ -28,7 +28,6 @@ stages:
         steps:
         - task: GitHubRelease@0
           displayName: PushRelease
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           inputs:
             gitHubConnection: 'guifabmello-access-token'
             repositoryName: 'guifabmello/terraform-helm-release'
