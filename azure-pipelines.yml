@@ -26,25 +26,17 @@ stages:
           vmImage: 'Ubuntu-20.04'
 
         steps:
-        - task: Bash@3
-          inputs:
-          targetType: 'inline'
-          script: |
-            echo Repository name: $(Build.Repository.Name)
-
-        - task: GitHubRelease@0
-          displayName: PushRelease
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        - task: GitHubRelease@1
           inputs:
             gitHubConnection: 'guifabmello-access-token'
-            repositoryName: $(Build.Repository.Name)
-            title: $(Build.BuildNumber)
+            repositoryName: 'guifabmello/terraform-azure-aks'
             action: 'create'
-            tagSource: manual
-            tags: |
-              latest
-              $(Build.BuildNumber)
-            addChangeLog: true
+            target: '$(Build.SourceVersion)'
+            tagSource: 'userSpecifiedTag'
+            tag: 'latest'
+            title: '$(Build.BuildNumber)'
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
               $(Build.ArtifactStagingDirectory)/CHANGELOG.md
+            changeLogCompareToRelease: 'lastFullRelease'
+            changeLogType: 'commitBased'
