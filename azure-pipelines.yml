@@ -33,8 +33,7 @@ stages:
             repositoryName: 'guifabmello/terraform-helm-release'
             title: $(Build.BuildNumber)
             action: 'create'
-            tagSource: manual
-            tag: $(Build.BuildNumber)
+            userSpecifiedTag: $(Build.BuildNumber)
             addChangeLog: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
