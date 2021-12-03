@@ -26,14 +26,15 @@ stages:
           vmImage: 'Ubuntu-20.04'
 
         steps:
-        - task: GitHubRelease@1
+        - task: GitHubRelease@0
           displayName: PushRelease
           inputs:
             gitHubConnection: 'guifabmello-access-token'
             repositoryName: 'guifabmello/terraform-helm-release'
             title: $(Build.BuildNumber)
             action: 'create'
-            userSpecifiedTag: $(Build.BuildNumber)
+            tagSource: 'manual'
+            tag: $(Build.BuildNumber)
             addChangeLog: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
