@@ -6,9 +6,10 @@ trigger:
   - hotfix/* # Official release
   
 variables:
-  System.Debug: true
   - group: release-note-auth
   - group: terraform-ci
+  - name: System.Debug
+    value: true
 
 resources:
   repositories:
