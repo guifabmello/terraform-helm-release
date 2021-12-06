@@ -38,6 +38,7 @@ stages:
             tagSource: 'manual'
             tag: $(Build.BuildNumber)
             addChangeLog: true
+            isPreRelease: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
               $(Build.ArtifactStagingDirectory)/CHANGELOG.md
