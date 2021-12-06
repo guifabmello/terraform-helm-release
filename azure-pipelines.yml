@@ -8,6 +8,7 @@ trigger:
 variables:
   - group: release-note-auth
   - group: terraform-ci
+  - System.Debug: true
 
 resources:
   repositories:
