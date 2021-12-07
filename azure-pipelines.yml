@@ -33,8 +33,7 @@ stages:
           displayName: Printing new version infos
           inputs:
             scripts: |
-              echo VersionBase: $(versionBase)
-              echo VersionType: $(versionType)
+              echo buildNumber: $(Build.BuildNumber)
 
         - task: GitHubRelease@1
           displayName: PushRelease
