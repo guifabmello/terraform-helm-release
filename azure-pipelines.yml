@@ -28,6 +28,16 @@ stages:
           vmImage: 'Ubuntu-20.04'
 
         steps:
+        - task: Bash@3
+          displayName: PushToGithub
+          inputs:
+            targetType: inline
+            script: |
+              git config --global user.email "kantar@kantaribopemedia.com"
+              git config --global user.name "Kantar user"
+              git remote add github git@github.com:guifabmello/terraform-helm-release.git
+              git push github $(Build.SourceBranch)
+
         - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
@@ -38,7 +48,6 @@ stages:
             tagSource: 'userSpecifiedTag'
             tag: $(Build.BuildNumber)
             addChangeLog: true
-            isPreRelease: true
             assets: |
               $(Build.ArtifactStagingDirectory)/README.md
               $(Build.ArtifactStagingDirectory)/CHANGELOG.md
