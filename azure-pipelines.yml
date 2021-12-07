@@ -27,8 +27,13 @@ stages:
         pool:
           vmImage: 'Ubuntu-20.04'
 
+
         steps:
-        - task: GitHubRelease@0
+        - task: ExtractVersionFromTag@1
+          inputs:
+            projectFolderPath: '$(Build.SourcesDirectory)'
+
+        - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
             gitHubConnection: 'guifabmello-access-token'
