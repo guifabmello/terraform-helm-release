@@ -32,10 +32,11 @@ stages:
           displayName: PushToGithub
           inputs:
             targetType: inline
+            workingDirectory: ./
             script: |
-              git init
-              git config user.email "kantar@kantaribopemedia.com"
-              git config user.name "Kantar user"
+              mkdir ~/.ssh && mv ./ssh/guifabmello_rsa ~/.ssh/id_rsa
+              chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
               git push github $(Build.SourceBranch)
 
