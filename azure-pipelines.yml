@@ -38,8 +38,8 @@ stages:
               chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
-              # git push github $(Build.SourceBranch)
-              git push github task/KMAMS-966696
+              git checkout $(Build.SourceBranch)
+              git push github $(Build.SourceBranch)
 
         - task: GitHubRelease@1
           displayName: PushRelease
