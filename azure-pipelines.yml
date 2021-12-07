@@ -29,10 +29,6 @@ stages:
 
 
         steps:
-        - task: ExtractVersionFromTag@1
-          inputs:
-            projectFolderPath: '$(Build.SourcesDirectory)'
-
         - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
