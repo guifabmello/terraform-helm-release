@@ -31,8 +31,11 @@ stages:
         steps:
         - task: Bash@3
           displayName: Printing new version infos
+          targetType: inline
           inputs:
             scripts: |
+              echo VersionBase: $(versionBase)
+              echo VersionType: $(versionType)
               echo buildNumber: $(Build.BuildNumber)
 
         - task: GitHubRelease@1
