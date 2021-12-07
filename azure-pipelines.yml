@@ -29,6 +29,13 @@ stages:
 
 
         steps:
+        - task: Bash@3
+          displayName: Printing new version infos
+          inputs:
+            scripts: |
+              echo VersionBase: $(versionBase)
+              echo VersionType: $(versionType)
+
         - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
