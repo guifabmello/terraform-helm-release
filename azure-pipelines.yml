@@ -33,8 +33,9 @@ stages:
           inputs:
             targetType: inline
             script: |
-              git config --global user.email "kantar@kantaribopemedia.com"
-              git config --global user.name "Kantar user"
+              git init
+              git config user.email "kantar@kantaribopemedia.com"
+              git config user.name "Kantar user"
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
               git push github $(Build.SourceBranch)
 
