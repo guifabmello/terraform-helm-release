@@ -27,17 +27,7 @@ stages:
         pool:
           vmImage: 'Ubuntu-20.04'
 
-
         steps:
-        - task: Bash@3
-          displayName: Printing new version infos
-          inputs:
-            targetType: inline
-            scripts: |
-              echo VersionBase: $(versionBase)
-              echo VersionType: $(versionType)
-              echo buildNumber: $(Build.BuildNumber)
-
         - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
