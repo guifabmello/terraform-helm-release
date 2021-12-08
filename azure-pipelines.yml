@@ -10,6 +10,8 @@ variables:
   - group: terraform-ci
   - name: System.Debug
     value: true
+  - name: GIT_TERMINAL_PROMPT
+    value: 1
 
 resources:
   repositories:
