@@ -43,6 +43,7 @@ stages:
               git fetch
               echo current branch: $(git rev-parse --abbrev-ref HEAD)
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
+              git remote set-url github git@github.com:guifabmello/terraform-helm-release.git
               git checkout $(Build.SourceBranch)
               git push github $(Build.SourceBranch)
 
