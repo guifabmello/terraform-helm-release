@@ -42,7 +42,7 @@ stages:
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
               # git fetch github
               #git checkout 
-              BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-Build.SourceBranch)
+              BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-)
               git push github ${BRANCH_NAME}
 
         - task: GitHubRelease@1
