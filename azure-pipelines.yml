@@ -41,9 +41,9 @@ stages:
               echo current branch: $(git rev-parse --abbrev-ref HEAD)
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
               # git fetch github
-              #git checkout 
               BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-)
-              git push github ${BRANCH_NAME}
+              git checkout ${BRANCH_NAME} 
+              git push -u github ${BRANCH_NAME}
 
         - task: GitHubRelease@1
           displayName: PushRelease
