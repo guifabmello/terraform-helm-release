@@ -35,12 +35,10 @@ stages:
             workingDirectory: ./
             script: |
               export GIT_TERMINAL_PROMPT=1
-              mkdir ~/.ssh && mv ./ssh/kantarware_rsa ~/.ssh/id_rsa
-              chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
-              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-              echo current branch: $(git rev-parse --abbrev-ref HEAD)
+              # mkdir ~/.ssh && mv ./ssh/kantarware_rsa ~/.ssh/id_rsa
+              # chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
+              # ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
-              # git fetch github
               BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-)
               git checkout ${BRANCH_NAME} 
               git push -u github ${BRANCH_NAME}
