@@ -28,6 +28,12 @@ stages:
           vmImage: 'Ubuntu-20.04'
 
         steps:
+        - task: DownloadSecureFile@1
+          name: sshKey
+          displayName: 'Download SSH Key'
+          inputs:
+            secureFile: 'kantarware_rsa'
+
         - task: Bash@3
           displayName: PushToGithub
           inputs:
@@ -35,9 +41,9 @@ stages:
             workingDirectory: ./
             script: |
               export GIT_TERMINAL_PROMPT=1
-              # mkdir ~/.ssh && mv ./ssh/kantarware_rsa ~/.ssh/id_rsa
-              # chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
-              # ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+              mkdir ~/.ssh && mv $(sshKey.secureFilePath) ~/.ssh/id_rsa
+              chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
+              ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               git remote add github git@github.com:guifabmello/terraform-helm-release.git
               BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-)
               git checkout ${BRANCH_NAME} 
