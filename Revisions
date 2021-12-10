@@ -1,5 +1,3 @@
-unreleased 1.9.4
+unreleased 1.6.1
 ================
-* Update bootstrap version from 2 to 3 in azure pipeline (KMAMS-966696)
-* Changed target repository for azure pipeline (KMAMS-966696)
-* Added ci_cd to release versions in github and terraform registry (KMAMS-966696)
+* Update bootstrap version from 2 to 3 in azure pipeline, added full ci_cd for github release and terraform registry (KMAMS-966696)
